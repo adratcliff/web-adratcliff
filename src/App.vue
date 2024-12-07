@@ -9,6 +9,9 @@
         to="/" />
       <v-app-bar-title text="AD Ratcliff" />
       <v-spacer />
+      <v-btn
+        :icon="infoDrawer ? 'mdi-close' : 'mdi-information'"
+        @click="infoDrawer = !infoDrawer" />
     </v-app-bar>
     <v-navigation-drawer
       width="240"
@@ -35,6 +38,23 @@
         <span>{{ route.title }}</span>
       </v-tooltip>
     </v-navigation-drawer>
+    <v-navigation-drawer
+      v-model="infoDrawer"
+      location="right"
+      width="360">
+      <v-card flat class="h-100">
+        <v-card-title>Test</v-card-title>
+        <v-divider />
+        <v-card-text class="info-card">Random card text</v-card-text>
+        <v-divider />
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            size="small"
+            text="Test Action"/>
+        </v-card-actions>
+      </v-card>
+    </v-navigation-drawer>
     <v-main theme="dark">
       <router-view />
     </v-main>
@@ -42,6 +62,8 @@
 </template>
 
 <script>
+import { toRef } from 'vue';
+
 const navRoutes = [
   { id: 'fitness',  title: 'Fitness Tracker', icon: 'mdi-run' },
   { id: 'menus',    title: 'Recipes',         icon: 'mdi-food-turkey' },
@@ -55,7 +77,14 @@ export default {
   setup() {
     return {
       navRoutes: navRoutes.filter(route => !('enabled' in route) || !!route.enabled),
+      infoDrawer: toRef(false),
     };
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.info-card {
+  height: calc(100% - 102px);
+}
+</style>
