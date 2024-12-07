@@ -1,30 +1,61 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <v-app>
+    <v-app-bar
+      absolute
+      app>
+      <v-app-bar-nav-icon
+        icon="mdi-home"
+        variant="text"
+        to="/" />
+      <v-app-bar-title text="AD Ratcliff" />
+      <v-spacer />
+    </v-app-bar>
+    <v-navigation-drawer
+      width="240"
+      disable-route-watcher
+      permanent
+      mini-variant
+      app>
+      <v-tooltip
+        v-for="route in navRoutes"
+        :key="`route-link-${route.id}`"
+        right>
+         <template #activator="{ props }">
+          <v-list-item
+            v-bind="props"
+            :to="route.path">
+            <template #prepend>
+              <v-icon>{{ route.icon }}</v-icon>
+            </template>
+            <v-list-item-title>
+              {{ route.title }}
+            </v-list-item-title>
+          </v-list-item>
+        </template>
+        <span>{{ route.title }}</span>
+      </v-tooltip>
+    </v-navigation-drawer>
+    <v-main theme="dark">
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+const navRoutes = [
+  { id: 'fitness',  title: 'Fitness Tracker', icon: 'mdi-run' },
+  { id: 'menus',    title: 'Recipes',         icon: 'mdi-food-turkey' },
+  { id: 'secret',   title: 'Secret Santa',    icon: 'mdi-gift', enabled: false },
+  { id: 'rgb',      title: 'RGB Switcher',    icon: 'mdi-connection' },
+  { id: 'images',   title: 'Quantizer',       icon: 'mdi-image' }, // Quantization
+];
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+export default {
+  name: 'App',
+  setup() {
+    return {
+      navRoutes: navRoutes.filter(route => !('enabled' in route) || !!route.enabled),
+    };
+  },
+};
+</script>
