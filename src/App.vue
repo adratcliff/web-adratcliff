@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app :theme="theme">
     <v-app-bar
       absolute
       app>
@@ -9,6 +9,9 @@
         to="/" />
       <v-app-bar-title text="AD Ratcliff" />
       <v-spacer />
+      <v-btn
+        :icon="theme === 'dark' ? 'mdi-weather-sunny' : 'mdi-weather-night'"
+        @click="toggleTheme" />
       <v-btn
         :icon="infoDrawer ? 'mdi-close' : 'mdi-information'"
         @click="infoDrawer = !infoDrawer" />
@@ -75,9 +78,17 @@ const navRoutes = [
 export default {
   name: 'App',
   setup() {
+    const theme = toRef(localStorage.getItem('adratcliff-pagetheme') || 'dark');
+    const toggleTheme = () => {
+      theme.value = theme.value === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('adratcliff-pagetheme', theme.value);
+    };
+
     return {
       navRoutes: navRoutes.filter(route => !('enabled' in route) || !!route.enabled),
       infoDrawer: toRef(false),
+      theme,
+      toggleTheme,
     };
   },
 };
