@@ -39,13 +39,24 @@ const routes = [
   {
     path: '/quantization',
     name: 'quantization',
-    component: () => import(/* webpackChunkName: "quantization" */ '@/views/AboutView'),
+    meta: {
+      runBefore: () => import(/* webpackChunkName: "quantization" */ `pages/mask-generator/dist/quantization.css`),
+    },
+    component: () => import(/* webpackChunkName: "quantization" */ 'pages/mask-generator'),
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach(async (to, from, next) => {
+  if (to.meta.runBefore) {
+    await to.meta.runBefore(to, from);
+  }
+
+  next();
 });
 
 export default router;
