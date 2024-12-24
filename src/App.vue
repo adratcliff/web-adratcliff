@@ -25,21 +25,21 @@
       app>
       <v-tooltip
         v-for="route in navRoutes"
-        :key="`route-link-${route.id}`"
+        :key="`route-link-${route.meta.id}`"
         right>
          <template #activator="{ props }">
           <v-list-item
             v-bind="props"
-            :to="route.path">
+            :to="route.meta.path">
             <template #prepend>
-              <v-icon>{{ route.icon }}</v-icon>
+              <v-icon>{{ route.meta.icon }}</v-icon>
             </template>
             <v-list-item-title>
-              {{ route.title }}
+              {{ route.meta.title }}
             </v-list-item-title>
           </v-list-item>
         </template>
-        <span>{{ route.title }}</span>
+        <span>{{ route.meta.title }}</span>
       </v-tooltip>
     </v-navigation-drawer>
     <v-navigation-drawer
@@ -67,14 +67,7 @@
 
 <script>
 import { toRef } from 'vue';
-
-const navRoutes = [
-  { id: 'fitness',  title: 'Fitness Tracker', path: '/fitness',      icon: 'mdi-run' },
-  { id: 'menus',    title: 'Recipes',         path: '/recipes',      icon: 'mdi-food-turkey' },
-  { id: 'secret',   title: 'Secret Santa',    path: '/secret-santa', icon: 'mdi-gift', enabled: false },
-  { id: 'rgb',      title: 'RGB Switcher',    path: '/rgb-mapper',   icon: 'mdi-connection' },
-  { id: 'images',   title: 'Quantizer',       path: '/quantization', icon: 'mdi-image' }, // Quantization
-];
+import { routes } from '@/router';
 
 export default {
   name: 'App',
@@ -85,8 +78,12 @@ export default {
       localStorage.setItem('adratcliff-pagetheme', theme.value);
     };
 
+    const navRoutes = routes
+      .filter(route => !route.meta.disabled && route.meta.position)
+      .sort((a, b) => a.meta.position - b.meta.position);
+
     return {
-      navRoutes: navRoutes.filter(route => !('enabled' in route) || !!route.enabled),
+      navRoutes,
       infoDrawer: toRef(false),
       theme,
       toggleTheme,
