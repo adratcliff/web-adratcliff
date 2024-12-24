@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '@/views/HomeView';
 
+const importChunk = (chunkImport, pageName) => chunkImport().then((pages) => pages[pageName]);
+
+const RecipeBook = () => import(/* webpackChunkName: "recipe-book" */ 'pages/recipe-book');
+
 const routes = [
   {
     path: '/',
@@ -15,7 +19,12 @@ const routes = [
   {
     path: '/recipes',
     name: 'recipe-book',
-    component: () => import(/* webpackChunkName: "recipe-book" */ 'pages/recipe-book'),
+    component: importChunk(RecipeBook, 'RecipeList'),
+  },
+  {
+    path: '/recipes/:id',
+    name: 'recipe-item',
+    component: importChunk(RecipeBook, 'RecipeItem'),
   },
   {
     path: '/secret-santa',

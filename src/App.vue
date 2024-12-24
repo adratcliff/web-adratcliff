@@ -69,11 +69,11 @@
 import { toRef } from 'vue';
 
 const navRoutes = [
-  { id: 'fitness',  title: 'Fitness Tracker', path: 'fitness',      icon: 'mdi-run' },
-  { id: 'menus',    title: 'Recipes',         path: 'recipes',      icon: 'mdi-food-turkey' },
-  { id: 'secret',   title: 'Secret Santa',    path: 'secret-santa', icon: 'mdi-gift', enabled: false },
-  { id: 'rgb',      title: 'RGB Switcher',    path: 'rgb-mapper',   icon: 'mdi-connection' },
-  { id: 'images',   title: 'Quantizer',       path: 'quantization', icon: 'mdi-image' }, // Quantization
+  { id: 'fitness',  title: 'Fitness Tracker', path: '/fitness',      icon: 'mdi-run' },
+  { id: 'menus',    title: 'Recipes',         path: '/recipes',      icon: 'mdi-food-turkey' },
+  { id: 'secret',   title: 'Secret Santa',    path: '/secret-santa', icon: 'mdi-gift', enabled: false },
+  { id: 'rgb',      title: 'RGB Switcher',    path: '/rgb-mapper',   icon: 'mdi-connection' },
+  { id: 'images',   title: 'Quantizer',       path: '/quantization', icon: 'mdi-image' }, // Quantization
 ];
 
 export default {
