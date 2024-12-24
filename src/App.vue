@@ -18,6 +18,7 @@
     </v-app-bar>
     <v-navigation-drawer
       width="240"
+      class="pt-2"
       disable-route-watcher
       permanent
       mini-variant
@@ -68,11 +69,11 @@
 import { toRef } from 'vue';
 
 const navRoutes = [
-  { id: 'fitness',  title: 'Fitness Tracker', icon: 'mdi-run' },
-  { id: 'menus',    title: 'Recipes',         icon: 'mdi-food-turkey' },
-  { id: 'secret',   title: 'Secret Santa',    icon: 'mdi-gift', enabled: false },
-  { id: 'rgb',      title: 'RGB Switcher',    icon: 'mdi-connection' },
-  { id: 'images',   title: 'Quantizer',       icon: 'mdi-image' }, // Quantization
+  { id: 'fitness',  title: 'Fitness Tracker', path: 'fitness',      icon: 'mdi-run' },
+  { id: 'menus',    title: 'Recipes',         path: 'recipes',      icon: 'mdi-food-turkey' },
+  { id: 'secret',   title: 'Secret Santa',    path: 'secret-santa', icon: 'mdi-gift', enabled: false },
+  { id: 'rgb',      title: 'RGB Switcher',    path: 'rgb-mapper',   icon: 'mdi-connection' },
+  { id: 'images',   title: 'Quantizer',       path: 'quantization', icon: 'mdi-image' }, // Quantization
 ];
 
 export default {
