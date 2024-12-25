@@ -36,7 +36,7 @@ export const routes = [
       icon: 'mdi-food-turkey',
       position: 20,
     },
-    component: importChunk(RecipeBook, 'RecipeList'),
+    component: () => importChunk(RecipeBook, 'RecipeList'),
   },
   {
     path: '/recipes/:id',
@@ -46,7 +46,7 @@ export const routes = [
       title: 'Recipe',
       icon: 'mdi-food-turkey',
     },
-    component: importChunk(RecipeBook, 'RecipeItem'),
+    component: () => importChunk(RecipeBook, 'RecipeItem'),
   },
   {
     path: '/secret-santa',
@@ -64,12 +64,13 @@ export const routes = [
     path: '/rgb-mapper',
     name: 'rgb-mapper',
     meta: {
+      runBefore: () => import(/* webpackChunkName: "quantization" */ `pages/rgb-crosser/dist/rgb-crosser.css`),
       id: 'rgb',
       title: 'RGB Switcher',
       icon: 'mdi-connection',
       position: 40,
     },
-    component: () => import(/* webpackChunkName: "rgb-mapper" */ '@/views/AboutView'),
+    component: () => import(/* webpackChunkName: "rgb-mapper" */ 'pages/rgb-crosser'),
   },
   {
     path: '/quantization',

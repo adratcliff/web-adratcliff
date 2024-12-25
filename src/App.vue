@@ -30,7 +30,7 @@
          <template #activator="{ props }">
           <v-list-item
             v-bind="props"
-            :to="route.meta.path">
+            :to="route.path">
             <template #prepend>
               <v-icon>{{ route.meta.icon }}</v-icon>
             </template>
@@ -59,7 +59,7 @@
         </v-card-actions>
       </v-card>
     </v-navigation-drawer>
-    <v-main theme="dark">
+    <v-main>
       <router-view />
     </v-main>
   </v-app>
