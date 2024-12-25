@@ -13,7 +13,7 @@ module.exports = defineConfig({
       alias: {
         vue: path.resolve('./node_modules/vue'),
         'vue-router': path.resolve('./node_modules/vue-router'),
-        pages: process.env.NODE_ENV === 'development' ? '../../../..' : 'pages',
+        pages: process.env.NODE_ENV === 'development' ? path.resolve('../') : 'pages',
       },
     },
   },
