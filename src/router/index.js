@@ -75,6 +75,9 @@ export const routes = [
   {
     path: '/quantization',
     name: 'quantization',
+    props: () => ({
+      worker: () => new Worker(new URL(`pages/mask-generator/dist/imageProcessor.js`, import.meta.url)),
+    }),
     meta: {
       runBefore: () => import(/* webpackChunkName: "quantization" */ `pages/mask-generator/dist/quantization.css`),
       id: 'images',
