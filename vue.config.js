@@ -1,4 +1,4 @@
-const { defineConfig } = require('@vue/cli-service')
+const { defineConfig } = require('@vue/cli-service');
 const path = require('path');
 
 module.exports = defineConfig({
@@ -13,6 +13,7 @@ module.exports = defineConfig({
       alias: {
         vue: path.resolve('./node_modules/vue'),
         'vue-router': path.resolve('./node_modules/vue-router'),
+        pinia: path.resolve('./node_modules/pinia'),
         pages: process.env.NODE_ENV === 'development' ? path.resolve('../') : 'pages',
       },
     },

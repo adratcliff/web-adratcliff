@@ -8,3 +8,8 @@ export const users = {
   getList: () => ({ endpoint: 'users' }),
   getItem: (id) => ({ endpoint: `users/${id}` }),
 };
+
+export const defaultCrud = {
+  getList: (resource) => () => ({ endpoint: `users/self/${resource}`}),
+  getItem: (resource) => (id) => ({ endpoint: `users/self/${resource}/${id}`}),
+};

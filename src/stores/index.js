@@ -1,6 +1,4 @@
-import { defineStore, storeToRefs } from 'pinia';
-import { createStore } from '@/stores/utils';
-import { stringToHslColor } from '@/utils';
+import { defineStore } from 'pinia';
 
 export const useAppStore = defineStore('app', {
   state: () => ({ token: '', userId: '' }),
@@ -26,18 +24,5 @@ export const useAppStore = defineStore('app', {
       this.userId = '';
       localStorage.removeItem('adratcliff-user-token');
     },
-  },
-});
-
-export const useUserStore = createStore('users', {
-  self(state) {
-    const { userId } = storeToRefs(useAppStore());
-    if (!userId.value || !(userId.value in state.resources)) return {};
-    const user = state.resources[userId.value];
-    return {
-      ...user,
-      initials: (user.firstName || '').slice(0, 1) + (user.lastName || '').slice(0, 1),
-      color: stringToHslColor(`${user.firstName || ''} ${user.lastName || ''}`, 50, 70),
-    };
   },
 });

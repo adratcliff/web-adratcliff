@@ -13,6 +13,8 @@ const applyList = (store, list) => {
   });
 };
 
+const getEndpoint = (resource, request) => (resource in endpoints) ? endpoints[resource][request] : endpoints.defaultCrud[request](resource);
+
 export const createStore = (resource, getters = {}, actions = {}) => defineStore(resource, {
   state: () => ({ loaders: { list: 0, item: [] }, resources: {} }),
   getters: {
@@ -20,7 +22,7 @@ export const createStore = (resource, getters = {}, actions = {}) => defineStore
       return Object.values(state.resources);
     },
     item(state) {
-      return (id) => state.resources[id];
+      return (id) => id in state.resources ? state.resources[id] : {};
     },
     ...getters,
   },
@@ -28,7 +30,7 @@ export const createStore = (resource, getters = {}, actions = {}) => defineStore
     async getList() {
       try {
         this.loaders.list += 1;
-        const { data: list } = await callApi(endpoints[resource].getList());
+        const { data: list } = await callApi(getEndpoint(resource, 'getList')());
         applyList(this, list[resource]);
         return list[resource];
       } catch (err) {
@@ -41,7 +43,7 @@ export const createStore = (resource, getters = {}, actions = {}) => defineStore
       if (this.loaders.item.includes(id)) return;
       try {
         this.loaders.item.push(id);
-        const { data: item } = await callApi(endpoints[resource].getItem(id));
+        const { data: item } = await callApi(getEndpoint(resource, 'getItem')(id));
         applyList(this, item[resource]);
         return item[resource][0];
       } catch (err) {

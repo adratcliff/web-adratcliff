@@ -85,7 +85,8 @@ import { computed, onMounted, ref, toRef } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { routes } from '@/router';
-import { useAppStore, useUserStore } from '@/stores';
+import { useAppStore } from '@/stores';
+import { useUserStore } from '@/stores/users';
 
 import LoginDialog from '@/components/LoginDialog.vue';
 
