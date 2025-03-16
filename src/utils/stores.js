@@ -24,6 +24,9 @@ export const createStore = (resource, getters = {}, actions = {}) => defineStore
     item(state) {
       return (id) => id in state.resources ? state.resources[id] : {};
     },
+    itemLoading(state) {
+      return (id) => state.loaders.item.includes(id);
+    },
     ...getters,
   },
   actions: {
