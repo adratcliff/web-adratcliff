@@ -15,6 +15,9 @@
       <v-btn
         :icon="infoDrawer ? 'mdi-close' : 'mdi-information'"
         @click="infoDrawer = !infoDrawer" />
+      <v-btn
+        :icon="userId ? 'mdi-account' : 'mdi-account-outline'"
+        @click="openLogin" />
     </v-app-bar>
     <v-navigation-drawer
       width="240"
@@ -59,6 +62,7 @@
         </v-card-actions>
       </v-card>
     </v-navigation-drawer>
+    <login-dialog ref="loginDialog" />
     <v-main>
       <router-view />
     </v-main>
@@ -66,11 +70,16 @@
 </template>
 
 <script>
-import { toRef } from 'vue';
+import { ref, toRef } from 'vue';
 import { routes } from '@/router';
+
+import LoginDialog from '@/components/Login.vue';
 
 export default {
   name: 'App',
+  components: {
+    LoginDialog,
+  },
   setup() {
     const theme = toRef(localStorage.getItem('adratcliff-pagetheme') || 'dark');
     const toggleTheme = () => {
@@ -82,11 +91,20 @@ export default {
       .filter(route => !route.meta.disabled && route.meta.position)
       .sort((a, b) => a.meta.position - b.meta.position);
 
+    const loginDialog = ref(null);
+    const openLogin = () => loginDialog.value.openLogin();
+
+    const token = localStorage.getItem('adratcliff-user-token');
+    const userId = (token || '').slice(0, 64);
+
     return {
       navRoutes,
       infoDrawer: toRef(false),
       theme,
       toggleTheme,
+      loginDialog,
+      openLogin,
+      userId,
     };
   },
 };
