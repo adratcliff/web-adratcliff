@@ -25,14 +25,16 @@
               <v-text-field
                 v-model="email"
                 label="Email"
-                density="comfortable" />
+                density="comfortable"
+                @keydown.enter="login" />
             </v-row>
             <v-row>
               <v-text-field
                 v-model="password"
                 label="Password"
                 type="password"
-                density="comfortable" />
+                density="comfortable"
+                @keydown.enter="login" />
             </v-row>
             <v-row>
               <v-btn
@@ -53,60 +55,46 @@
   </v-dialog>
 </template>
 
-<script>
+<script setup>
 import { computed, ref } from 'vue';
-import { callApi } from '@/utils/api';
-import { postLogin } from '@/endpoints';
+import { useAppStore } from '@/stores';
 
-export default {
-  name: 'LoginDialog',
-  setup(props, ctx) {
-    const loaders = ref({ login: 0 });
-    const loginDialog = ref(false);
-    const email = ref('');
-    const password = ref('');
+const loaders = ref({ login: 0 });
+const loginDialog = ref(false);
+const email = ref('');
+const password = ref('');
 
-    const openLogin = () => {
-      email.value = '';
-      password.value = '';
-      loginDialog.value = true;
-    };
+const openLogin = () => {
+  email.value = '';
+  password.value = '';
+  loginDialog.value = true;
+};
 
-    ctx.expose({ openLogin });
+// eslint-disable-next-line no-undef
+defineExpose({ openLogin });
 
-    const closeLogin = () => {
-      loginDialog.value = false;
-    };
+const closeLogin = () => {
+  loginDialog.value = false;
+};
 
-    const loginDisabled = computed(() => {
-      if (loaders.value.login) return true;
-      if (!email.value || !password.value) return true;
-      return false;
-    })
+const loginDisabled = computed(() => {
+  if (loaders.value.login) return true;
+  if (!email.value || !password.value) return true;
+  return false;
+});
 
-    const login = async () => {
-      if (!email.value || !password.value) return;
-      loaders.value.login += 1;
-      try {
-        const { data: tokenRequest } = await callApi(postLogin({ email: email.value, password: password.value }));
-        localStorage.setItem('adratcliff-user-token', tokenRequest.token);
-        closeLogin();
-      } catch (err) {
-        console.warn('Error in token request', err);
-      } finally {
-        loaders.value.login -= 1;
-      }
-    };
+const appStore = useAppStore();
 
-    return {
-      loaders,
-      loginDialog,
-      email,
-      password,
-      closeLogin,
-      loginDisabled,
-      login,
-    };
-  },
+const login = async () => {
+  if (!email.value || !password.value) return;
+  loaders.value.login += 1;
+  try {
+    await appStore.login({ email: email.value, password: password.value });
+    closeLogin();
+  } catch (err) {
+    console.warn('Error in token request', err);
+  } finally {
+    loaders.value.login -= 1;
+  }
 };
 </script>

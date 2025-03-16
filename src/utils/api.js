@@ -4,8 +4,8 @@ const env = {
 
 export const callApi = async ({
   endpoint,
-  method,
   data,
+  method = 'GET',
   headers = { 'content-type': 'application/json' },
   api = 'api',
 }) => {

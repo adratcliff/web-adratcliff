@@ -3,3 +3,8 @@ export const postLogin = (data) => ({
   method: 'POST',
   data,
 });
+
+export const users = {
+  getList: () => ({ endpoint: 'users' }),
+  getItem: (id) => ({ endpoint: `users/${id}` }),
+};

@@ -16,8 +16,18 @@
         :icon="infoDrawer ? 'mdi-close' : 'mdi-information'"
         @click="infoDrawer = !infoDrawer" />
       <v-btn
-        :icon="userId ? 'mdi-account' : 'mdi-account-outline'"
+        v-if="!user.id"
+        icon="mdi-account-outline"
         @click="openLogin" />
+      <v-btn
+        v-if="user.id"
+        icon
+        @click="logout">
+        <v-avatar
+          :color="user.color"
+          :text="user.initials"
+          density="compact" />
+      </v-btn>
     </v-app-bar>
     <v-navigation-drawer
       width="240"
@@ -62,52 +72,48 @@
         </v-card-actions>
       </v-card>
     </v-navigation-drawer>
-    <login-dialog ref="loginDialog" />
+    <LoginDialog ref="loginDialog" />
     <v-main>
+      {{ user }}
       <router-view />
     </v-main>
   </v-app>
 </template>
 
-<script>
-import { ref, toRef } from 'vue';
+<script setup>
+import { onMounted, ref, toRef } from 'vue';
+import { storeToRefs } from 'pinia';
+
 import { routes } from '@/router';
+import { useAppStore, useUserStore } from '@/stores';
 
-import LoginDialog from '@/components/Login.vue';
+import LoginDialog from '@/components/LoginDialog.vue';
 
-export default {
-  name: 'App',
-  components: {
-    LoginDialog,
-  },
-  setup() {
-    const theme = toRef(localStorage.getItem('adratcliff-pagetheme') || 'dark');
-    const toggleTheme = () => {
-      theme.value = theme.value === 'dark' ? 'light' : 'dark';
-      localStorage.setItem('adratcliff-pagetheme', theme.value);
-    };
-
-    const navRoutes = routes
-      .filter(route => !route.meta.disabled && route.meta.position)
-      .sort((a, b) => a.meta.position - b.meta.position);
-
-    const loginDialog = ref(null);
-    const openLogin = () => loginDialog.value.openLogin();
-
-    const token = localStorage.getItem('adratcliff-user-token');
-    const userId = (token || '').slice(0, 64);
-
-    return {
-      navRoutes,
-      infoDrawer: toRef(false),
-      theme,
-      toggleTheme,
-      loginDialog,
-      openLogin,
-      userId,
-    };
-  },
+const theme = toRef(localStorage.getItem('adratcliff-pagetheme') || 'dark');
+const toggleTheme = () => {
+  theme.value = theme.value === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('adratcliff-pagetheme', theme.value);
 };
+
+const infoDrawer = toRef(false);
+
+const navRoutes = routes
+  .filter(route => !route.meta.disabled && route.meta.position)
+  .sort((a, b) => a.meta.position - b.meta.position);
+
+const appStore = useAppStore();
+const userStore = useUserStore();
+
+const loginDialog = ref(null);
+const openLogin = () => loginDialog.value.openLogin();
+const logout = () => appStore.logout();
+
+const { self: user } = storeToRefs(userStore);
+
+onMounted(async () => {
+  appStore.pageLoad();
+  await userStore.getDetail('self');
+});
 </script>
 
 <style lang="scss" scoped>
