@@ -58,6 +58,8 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { useAppStore } from '@/stores';
+import { callApi } from '@/utils/api';
+import { postLogin } from '@/endpoints';
 
 const loaders = ref({ login: 0 });
 const loginDialog = ref(false);
@@ -89,7 +91,8 @@ const login = async () => {
   if (!email.value || !password.value) return;
   loaders.value.login += 1;
   try {
-    await appStore.login({ email: email.value, password: password.value });
+    const { data: tokenRequest } = await callApi(postLogin({ email: email.value, password: password.value }));
+    appStore.login(tokenRequest);
     closeLogin();
   } catch (err) {
     console.warn('Error in token request', err);

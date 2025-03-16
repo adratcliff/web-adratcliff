@@ -1,8 +1,6 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { createStore } from '@/stores/utils';
 import { stringToHslColor } from '@/utils';
-import { callApi } from '@/utils/api';
-import { postLogin } from '@/endpoints';
 
 export const useAppStore = defineStore('app', {
   state: () => ({ token: '', userId: '' }),
@@ -15,10 +13,9 @@ export const useAppStore = defineStore('app', {
     },
     async login(data) {
       try {
-        const { data: tokenRequest } = await callApi(postLogin(data));
-        localStorage.setItem('adratcliff-user-token', tokenRequest.token);
-        this.pageLoad(tokenRequest.token);
-        return tokenRequest.token;
+        localStorage.setItem('adratcliff-user-token', data.token);
+        this.pageLoad(data.token);
+        return data.token;
       } catch (err) {
         console.warn('Error logging in', err);
         return false;

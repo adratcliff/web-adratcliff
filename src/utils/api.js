@@ -1,3 +1,5 @@
+import { useAppStore } from '@/stores';
+
 const env = {
   api: 'https://o9jlz36fff.execute-api.ap-southeast-2.amazonaws.com/2024-09-06/',
 };
@@ -25,7 +27,12 @@ export const callApi = async ({
       body: JSON.stringify(data),
     });
 
-    if (!request.ok) return { status: request.status };
+    if (request.status === 401) {
+      useAppStore().logout();
+      throw { status: request.status };
+    }
+
+    if (!request.ok) throw { status: request.status };
 
     const result = await request.json();
 

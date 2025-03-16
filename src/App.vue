@@ -81,7 +81,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, toRef } from 'vue';
+import { computed, onMounted, ref, toRef } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { routes } from '@/router';
@@ -97,18 +97,26 @@ const toggleTheme = () => {
 
 const infoDrawer = toRef(false);
 
-const navRoutes = routes
-  .filter(route => !route.meta.disabled && route.meta.position)
-  .sort((a, b) => a.meta.position - b.meta.position);
-
 const appStore = useAppStore();
 const userStore = useUserStore();
+
+const { token } = storeToRefs(appStore);
+const { self: user } = storeToRefs(userStore);
+
+const navRoutes = computed(() => routes
+  .filter(route => {
+    if (route.meta.disabled) return false;
+    if (!route.meta.position) return false;
+    if (route.meta.requirements) {
+      if (route.meta.requirements.includes('token') && !token.value) return false;
+    }
+    return true;
+  })
+  .sort((a, b) => a.meta.position - b.meta.position));
 
 const loginDialog = ref(null);
 const openLogin = () => loginDialog.value.openLogin();
 const logout = () => appStore.logout();
-
-const { self: user } = storeToRefs(userStore);
 
 onMounted(async () => {
   appStore.pageLoad();
