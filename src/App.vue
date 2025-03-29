@@ -74,7 +74,6 @@
     </v-navigation-drawer>
     <LoginDialog ref="loginDialog" />
     <v-main>
-      {{ user }}
       <router-view />
     </v-main>
   </v-app>
