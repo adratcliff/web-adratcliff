@@ -8,6 +8,16 @@ module.exports = defineConfig({
 			// https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vuetify-loader
 		},
   },
+  pwa: {
+    name: 'ARatcliff',
+    themeColor: '#C5E1A5',
+  },
+  pages: {
+    index: {
+      entry: 'src/main.js',
+      title: 'ARatcliff',
+    },
+  },
   configureWebpack: {
     resolve: {
       alias: {
