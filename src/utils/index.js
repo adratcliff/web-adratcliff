@@ -36,3 +36,20 @@ export const tagColor = (tag) => {
   const name = colorNames[Math.abs(hashString(tag)) % colorNames.length];
   return name;
 };
+
+export const round = (number, places=2) => Math.round(number * 10 ** places) / 10 ** places;
+
+export const decimalToFraction = (decimal, mixed=false) => {
+  if (decimal === Math.round(decimal)) return decimal;
+
+  let denominator = 1 / decimal;
+  let numerator = 1;
+  while (round(denominator, 1) !== Math.round(denominator)) {
+    numerator += 1;
+    denominator += 1 / decimal;
+  }
+
+  if (!mixed || numerator < denominator) return `${numerator}/${round(denominator, 0)}`;
+
+  return `${Math.floor(numerator / denominator)} ${numerator % round(denominator, 0)}/${round(denominator, 0)}`;
+};
