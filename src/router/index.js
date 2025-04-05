@@ -42,6 +42,16 @@ export const routes = [
     component: () => importChunk(RecipeBook, 'RecipeList'),
   },
   {
+    path: '/recipes/create',
+    name: 'recipe-create',
+    meta: {
+      id: 'recipe-new',
+      title: 'Create Recipe',
+      icon: 'mdi-food-turkey',
+    },
+    component: () => importChunk(RecipeBook, 'RecipeCreate'),
+  },
+  {
     path: '/recipes/:id',
     name: 'recipe-item',
     meta: {
