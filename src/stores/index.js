@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { handleError } from '@/utils';
 
 export const useAppStore = defineStore('app', {
   state: () => ({ token: '', userId: '' }),
@@ -15,7 +16,7 @@ export const useAppStore = defineStore('app', {
         this.pageLoad(data.token);
         return data.token;
       } catch (err) {
-        console.warn('Error logging in', err);
+        handleError('Error logging in', err);
         return false;
       }
     },

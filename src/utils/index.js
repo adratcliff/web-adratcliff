@@ -1,3 +1,6 @@
+import { callApi } from '@/utils/api';
+import { errorLogging } from '@/endpoints';
+
 export const capitalise = (str) => str[0].toUpperCase() + str.slice(1);
 export const capitaliseString = (str) => str.split(/\s/g).map(capitalise).join(' ');
 
@@ -52,4 +55,18 @@ export const decimalToFraction = (decimal, mixed=false) => {
   if (!mixed || numerator < denominator) return `${numerator}/${round(denominator, 0)}`;
 
   return `${Math.floor(numerator / denominator)} ${numerator % round(denominator, 0)}/${round(denominator, 0)}`;
+};
+
+export const handleError = (label, error, props={}) => {
+  const debugLogs = localStorage.getItem('aratcliff-debug-logs');
+
+  if (debugLogs) {
+    console.error(label, error);
+  }
+
+  callApi(errorLogging({
+    ...props,
+    label,
+    error: error.toString(),
+  })).catch((err) => console.warn(`Failed to log ${label} error`, err));
 };

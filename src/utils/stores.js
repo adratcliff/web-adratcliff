@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { handleError } from '@/utils';
 import { callApi } from '@/utils/api';
 import * as endpoints from '@/endpoints';
 
@@ -37,7 +38,7 @@ export const createStore = (resource, getters = {}, actions = {}) => defineStore
         applyList(this, list[resource]);
         return list[resource];
       } catch (err) {
-        console.warn(`Error fetching ${resource} list`, err);
+        handleError(`Error fetching ${resource} list`, err);
       } finally {
         this.loaders.list -= 1;
       }
@@ -50,7 +51,7 @@ export const createStore = (resource, getters = {}, actions = {}) => defineStore
         applyList(this, item[resource]);
         return item[resource][0];
       } catch (err) {
-        console.warn(`Error fetching ${resource} item ${id}`, err);
+        handleError(`Error fetching ${resource} item ${id}`, err);
       } finally {
         this.loaders.item.splice(this.loaders.item.indexOf(id), 1);
       }

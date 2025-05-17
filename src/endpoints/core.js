@@ -4,6 +4,12 @@ export const postLogin = (data) => ({
   data,
 });
 
+export const errorLogging = (data) => ({
+  endpoint: 'errors',
+  method: 'POST',
+  data,
+});
+
 export const users = {
   getList: () => ({ endpoint: 'users' }),
   getItem: (id) => ({ endpoint: `users/${id}` }),

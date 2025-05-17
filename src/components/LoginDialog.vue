@@ -58,6 +58,7 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { useAppStore } from '@/stores';
+import { handleError } from '@/utils';
 import { callApi } from '@/utils/api';
 import { postLogin } from '@/endpoints';
 
@@ -95,7 +96,7 @@ const login = async () => {
     appStore.login(tokenRequest);
     closeLogin();
   } catch (err) {
-    console.warn('Error in token request', err);
+    handleError('Error in token request', err);
   } finally {
     loaders.value.login -= 1;
   }
