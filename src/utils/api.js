@@ -1,7 +1,7 @@
 import { useAppStore } from '@/stores';
 
 const env = {
-  api: 'https://o9jlz36fff.execute-api.ap-southeast-2.amazonaws.com/2024-09-06/',
+  api: 'https://api.aratcliff.com/2024-09-06/',
 };
 
 export const callApi = async ({
