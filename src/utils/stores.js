@@ -17,7 +17,14 @@ const applyList = (store, list) => {
 const getEndpoint = (resource, request) => (resource in endpoints) ? endpoints[resource][request] : endpoints.defaultCrud[request](resource);
 
 export const createStore = (resource, getters = {}, actions = {}) => defineStore(resource, {
-  state: () => ({ loaders: { list: 0, item: [] }, resources: {} }),
+  state: () => ({
+    loaders: {
+      list: 0,
+      creation: 0,
+      item: [],
+    },
+    resources: {}
+  }),
   getters: {
     list(state) {
       return Object.values(state.resources);
@@ -54,6 +61,21 @@ export const createStore = (resource, getters = {}, actions = {}) => defineStore
         handleError(`Error fetching ${resource} item ${id}`, err);
       } finally {
         this.loaders.item.splice(this.loaders.item.indexOf(id), 1);
+      }
+    },
+    async createDetail(payload) {
+      try {
+        this.loaders.creation += 1;
+        const { data: item } = await callApi(getEndpoint(resource, 'createItem')(payload));
+        this.resources[item[resource]] = {
+          ...payload,
+          id: item[resource],
+        };
+        return item[resource];
+      } catch (err) {
+        handleError(`Error creating ${resource} list`, err);
+      } finally {
+        this.loaders.creation -= 1;
       }
     },
     // eslint-disable-next-line no-unused-vars

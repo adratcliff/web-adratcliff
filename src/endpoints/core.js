@@ -18,4 +18,9 @@ export const users = {
 export const defaultCrud = {
   getList: (resource) => () => ({ endpoint: `users/self/${resource}`}),
   getItem: (resource) => (id) => ({ endpoint: `users/self/${resource}/${id}`}),
+  createItem: (resource) => (data) => ({
+    endpoint: `users/self/${resource}`,
+    method: 'POST',
+    data,
+  }),
 };
