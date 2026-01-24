@@ -7,6 +7,7 @@ import AboutView from '@/pages/AboutView.vue';
 import { useAppStore } from '@/stores';
 
 import HelloWorld from '@/components/HelloWorld.vue';
+import RemoteLoader from '@/components/RemoteLoader.vue';
 
 // const importChunk = (chunkImport, pageName) => chunkImport().then((pages) => pages[pageName]);
 
@@ -93,7 +94,10 @@ export const routes = [
       position: 40,
     },
     // component: () => import(/* webpackChunkName: "rgb-mapper" */ 'pages/rgb-crosser'),
-    component: () => HelloWorld
+    component: RemoteLoader,
+    props: {
+      target: () => import('rgbCrosser/RgbCrosser'),
+    },
   },
   {
     path: '/quantization',

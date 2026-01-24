@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@originjs/vite-plugin-federation": "^1.4.1",
     "@playwright/test": "^1.57.0",
     "@vitejs/plugin-vue": "^6.0.3",
     "@vitest/eslint-plugin": "^1.6.6",
