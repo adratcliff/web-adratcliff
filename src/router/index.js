@@ -1,12 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { storeToRefs } from 'pinia';
 
-import HomeView from '@/views/HomeView';
+import HomeView from '@/pages/HomeView.vue';
+import AboutView from '@/pages/AboutView.vue';
+
 import { useAppStore } from '@/stores';
 
-const importChunk = (chunkImport, pageName) => chunkImport().then((pages) => pages[pageName]);
+import HelloWorld from '@/components/HelloWorld.vue';
 
-const RecipeBook = () => import(/* webpackChunkName: "recipe-book" */ 'pages/recipe-book');
+// const importChunk = (chunkImport, pageName) => chunkImport().then((pages) => pages[pageName]);
+
+// const RecipeBook = () => import(/* webpackChunkName: "recipe-book" */ 'pages/recipe-book');
 
 export const routes = [
   {
@@ -28,7 +32,8 @@ export const routes = [
       icon: 'mdi-run',
       position: 10,
     },
-    component: () => import(/* webpackChunkName: "fitness" */ '@/views/AboutView'),
+    component: () => AboutView,
+    // component: () => import(/* webpackChunkName: "fitness" */ '@/views/AboutView'),
   },
   {
     path: '/recipes',
@@ -39,7 +44,8 @@ export const routes = [
       icon: 'mdi-food-turkey',
       position: 20,
     },
-    component: () => importChunk(RecipeBook, 'RecipeList'),
+    // component: () => importChunk(RecipeBook, 'RecipeList'),
+    component: () => HelloWorld
   },
   {
     path: '/recipes/create',
@@ -49,7 +55,8 @@ export const routes = [
       title: 'Create Recipe',
       icon: 'mdi-food-turkey',
     },
-    component: () => importChunk(RecipeBook, 'RecipeCreate'),
+    // component: () => importChunk(RecipeBook, 'RecipeCreate'),
+    component: () => HelloWorld
   },
   {
     path: '/recipes/:id',
@@ -59,7 +66,8 @@ export const routes = [
       title: 'Recipe',
       icon: 'mdi-food-turkey',
     },
-    component: () => importChunk(RecipeBook, 'RecipeItem'),
+    // component: () => importChunk(RecipeBook, 'RecipeItem'),
+    component: () => HelloWorld
   },
   {
     path: '/secret-santa',
@@ -71,39 +79,42 @@ export const routes = [
       position: 30,
       disabled: true,
     },
-    component: () => import(/* webpackChunkName: "secret-santa" */ '@/views/AboutView'),
+    // component: () => import(/* webpackChunkName: "secret-santa" */ '@/views/AboutView'),
+    component: () => HelloWorld
   },
   {
     path: '/rgb-mapper',
     name: 'rgb-mapper',
     meta: {
-      runBefore: () => import(/* webpackChunkName: "quantization" */ `pages/rgb-crosser/dist/rgb-crosser.css`),
+      // runBefore: () => import(/* webpackChunkName: "quantization" */ `pages/rgb-crosser/dist/rgb-crosser.css`),
       id: 'rgb',
       title: 'RGB Switcher',
       icon: 'mdi-connection',
       position: 40,
     },
-    component: () => import(/* webpackChunkName: "rgb-mapper" */ 'pages/rgb-crosser'),
+    // component: () => import(/* webpackChunkName: "rgb-mapper" */ 'pages/rgb-crosser'),
+    component: () => HelloWorld
   },
   {
     path: '/quantization',
     name: 'quantization',
     props: () => ({
-      worker: () => new Worker(new URL(`pages/mask-generator/dist/imageProcessor.js`, import.meta.url)),
+      // worker: () => new Worker(new URL(`pages/mask-generator/dist/imageProcessor.js`, import.meta.url)),
     }),
     meta: {
-      runBefore: () => import(/* webpackChunkName: "quantization" */ `pages/mask-generator/dist/quantization.css`),
+      // runBefore: () => import(/* webpackChunkName: "quantization" */ `pages/mask-generator/dist/quantization.css`),
       id: 'images',
       title: 'Quantizer',
       icon: 'mdi-image',
       position: 50,
     },
-    component: () => import(/* webpackChunkName: "quantization" */ 'pages/mask-generator'),
+    // component: () => import(/* webpackChunkName: "quantization" */ 'pages/mask-generator'),
+    component: () => HelloWorld
   },
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 });
 
