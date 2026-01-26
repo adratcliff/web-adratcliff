@@ -7,7 +7,8 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import federation from '@originjs/vite-plugin-federation';
 
 const remotes = [
-  { id: 'rgbCrosser', filename: 'rgbCrosser', folder: 'rgb-crosser' },
+  { id: 'rgbCrosser', filename: 'rgbCrosser', folder: 'rgb-crosser', port: 8091 },
+  { id: 'quantizer', filename: 'quantizer', folder: 'quantizer', port: 8092 },
 ];
 
 // https://vite.dev/config/
@@ -23,7 +24,7 @@ export default defineConfig(({ mode }) => {
         name: 'web-adratcliff',
         remotes: remotes.reduce((acc, cur) => ({
           ...acc,
-          [cur.id]: `${env.VITE_REMOTE_MODULE_BASE}/${mode === 'production' ? `${cur.folder}/` : ''}assets/${cur.filename}.js`
+          [cur.id]: `${env.VITE_REMOTE_MODULE_BASE}${mode === 'production' ? `/${cur.folder}` : cur.port}/assets/${cur.filename}.js`
         }), {}),
         shared: ['vue', 'vuetify'],
       }),
