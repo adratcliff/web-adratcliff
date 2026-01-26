@@ -5,10 +5,11 @@
     </template>
 
     <template #fallback>
-      <div class="loader-container">
-        <v-progress-circular indeterminate color="primary" />
-        <p>Loading Module...</p>
-      </div>
+      <v-row>
+        <v-col cols="12" class="d-flex justify-center mt-12">
+          <v-progress-circular indeterminate color="primary" size="80" width="5" />
+        </v-col>
+      </v-row>
     </template>
   </Suspense>
 </template>
