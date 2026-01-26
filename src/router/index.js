@@ -44,6 +44,7 @@ export const routes = [
       title: 'Recipes',
       icon: 'mdi-food-turkey',
       position: 20,
+      disabled: true,
     },
     // component: () => importChunk(RecipeBook, 'RecipeList'),
     component: () => HelloWorld
@@ -111,6 +112,7 @@ export const routes = [
       title: 'Quantizer',
       icon: 'mdi-image',
       position: 50,
+      disabled: true,
     },
     // component: () => import(/* webpackChunkName: "quantization" */ 'pages/mask-generator'),
     component: () => HelloWorld
