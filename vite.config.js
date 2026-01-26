@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
         name: 'web-adratcliff',
         remotes: remotes.reduce((acc, cur) => ({
           ...acc,
-          [cur.id]: `${env.VITE_REMOTE_MODULE_BASE}/${mode === 'production' ? `${cur.folder}/` : ''}/assets/${cur.filename}.js`
+          [cur.id]: `${env.VITE_REMOTE_MODULE_BASE}/${mode === 'production' ? `${cur.folder}/` : ''}assets/${cur.filename}.js`
         }), {}),
         shared: ['vue', 'vuetify'],
       }),
