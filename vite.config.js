@@ -28,4 +28,14 @@ export default defineConfig({
   server: {
     port: '8080',
   },
+  build: {
+    target: 'esnext',
+    minify: env.VITE_MINIFY === 'true',
+    cssCodeSplit: env.VITE_CSS_CODE_SPLIT === 'true',
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'esnext'
+    }
+  }
 })
