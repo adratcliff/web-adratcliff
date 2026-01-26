@@ -88,34 +88,29 @@ export const routes = [
     path: '/rgb-mapper',
     name: 'rgb-mapper',
     meta: {
-      // runBefore: () => import(/* webpackChunkName: "quantization" */ `pages/rgb-crosser/dist/rgb-crosser.css`),
       id: 'rgb',
       title: 'RGB Switcher',
       icon: 'mdi-connection',
       position: 40,
     },
-    // component: () => import(/* webpackChunkName: "rgb-mapper" */ 'pages/rgb-crosser'),
     component: RemoteLoader,
     props: {
-      target: () => import('rgbCrosser/RgbCrosser'),
+      loader: () => import('rgbCrosser/RgbCrosser'),
     },
   },
   {
     path: '/quantization',
     name: 'quantization',
-    props: () => ({
-      // worker: () => new Worker(new URL(`pages/mask-generator/dist/imageProcessor.js`, import.meta.url)),
-    }),
     meta: {
-      // runBefore: () => import(/* webpackChunkName: "quantization" */ `pages/mask-generator/dist/quantization.css`),
       id: 'images',
       title: 'Quantizer',
       icon: 'mdi-image',
       position: 50,
-      disabled: true,
     },
-    // component: () => import(/* webpackChunkName: "quantization" */ 'pages/mask-generator'),
-    component: () => HelloWorld
+    component: RemoteLoader,
+    props: {
+      loader: () => import('quantizer/Quantizer'),
+    },
   },
 ];
 

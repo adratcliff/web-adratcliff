@@ -15,10 +15,10 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, h, defineProps } from 'vue';
+import { defineAsyncComponent, h, defineProps, watch, shallowRef } from 'vue';
 
 const props = defineProps({
-  target: {
+  loader: {
     type: Function,
     required: true,
   },
@@ -28,11 +28,16 @@ const props = defineProps({
   },
 });
 
-const AsyncRemote = defineAsyncComponent({
-  loader: props.target,
-  errorComponent: {
-    render: () => h('div', 'Error: Could not connect to the remote application.')
-  },
-  timeout: 5000
-});
+const AsyncRemote = shallowRef(null);
+
+watch(() => props.loader, (newLoader) => {
+  AsyncRemote.value = defineAsyncComponent({
+    loader: newLoader,
+    errorComponent: {
+      render: () => h('div', 'Error: Could not connect to the remote application.')
+    },
+    timeout: 5000
+  });
+}, { immediate: true })
+
 </script>
