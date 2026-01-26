@@ -6,6 +6,10 @@ import vuetify from 'vite-plugin-vuetify'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import federation from '@originjs/vite-plugin-federation';
 
+const remotes = [
+  { id: 'rgbCrosser', filename: 'rgbCrosser', folder: 'rgb-crosser' },
+];
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
@@ -17,9 +21,10 @@ export default defineConfig(({ mode }) => {
       vueDevTools(),
       federation({
         name: 'web-adratcliff',
-        remotes: {
-          rgbCrosser: 'http://localhost:8091/assets/rgbCrosser.js',
-        },
+        remotes: remotes.reduce((acc, cur) => ({
+          ...acc,
+          [cur.id]: `${env.VITE_REMOTE_MODULE_BASE}/${mode === 'production' ? `${cur.folder}/` : ''}/assets/${cur.filename}.js`
+        }), {}),
         shared: ['vue', 'vuetify'],
       }),
     ],
