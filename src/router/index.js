@@ -44,11 +44,11 @@ export const routes = [
       title: 'Recipes',
       icon: 'mdi-food-turkey',
       position: 20,
-      disabled: true,
     },
-    // component: () => importChunk(RecipeBook, 'RecipeList'),
-    component: () => HelloWorld
-  },
+    component: RemoteLoader,
+    props: {
+      loader: () => import('recipeBook/List'),
+    },  },
   {
     path: '/recipes/create',
     name: 'recipe-create',
@@ -57,9 +57,10 @@ export const routes = [
       title: 'Create Recipe',
       icon: 'mdi-food-turkey',
     },
-    // component: () => importChunk(RecipeBook, 'RecipeCreate'),
-    component: () => HelloWorld
-  },
+    component: RemoteLoader,
+    props: {
+      loader: () => import('recipeBook/Create'),
+    },  },
   {
     path: '/recipes/:id',
     name: 'recipe-item',
@@ -68,9 +69,10 @@ export const routes = [
       title: 'Recipe',
       icon: 'mdi-food-turkey',
     },
-    // component: () => importChunk(RecipeBook, 'RecipeItem'),
-    component: () => HelloWorld
-  },
+    component: RemoteLoader,
+    props: {
+      loader: () => import('recipeBook/Item'),
+    },  },
   {
     path: '/secret-santa',
     name: 'secret-santa',
