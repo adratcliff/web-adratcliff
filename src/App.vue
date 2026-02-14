@@ -2,7 +2,7 @@
   <v-app :theme="theme">
     <v-app-bar flat border>
       <v-app-bar-nav-icon
-        v-if="$vuetify.display.mobile"
+        v-if="isMobile"
         @click="navDrawer = !navDrawer" />
       <v-btn v-else icon="mdi-home" variant="text" to="/" />
 
@@ -25,9 +25,15 @@
 
         <v-divider vertical inset class="mx-2" />
 
-        <v-btn v-if="!user.id" variant="flat" color="primary" @click="openLogin">
-          <v-icon start>mdi-account-outline</v-icon>
-          <span v-if="!$vuetify.display.mobile">Login</span>
+        <v-btn
+          v-if="!user.id"
+          variant="flat"
+          color="primary"
+          density="comfortable"
+          :prepend-icon="!isMobile ? 'mdi-account-outline' : false"
+          :icon="isMobile ? 'mdi-account-outline' : false"
+          :text="!isMobile ? 'Login' : ''"
+          @click="openLogin">
         </v-btn>
 
         <v-menu v-else location="bottom end">
@@ -47,8 +53,8 @@
 
     <v-navigation-drawer
       v-model="navDrawer"
-      :permanent="!$vuetify.display.mobile"
-      :rail="!$vuetify.display.mobile"
+      :permanent="!isMobile"
+      :rail="!isMobile"
       expand-on-hover
       border>
       <v-list nav>
@@ -65,7 +71,7 @@
 
     <v-navigation-drawer
       v-model="infoDrawer"
-      :width="$vuetify.display.mobile ? $vuetify.display.width : 360"
+      :width="isMobile ? $vuetify.display.width : 360"
       location="right"
       temporary
       border>
@@ -102,6 +108,7 @@
 
 <script setup>
 import { computed, onMounted, ref, toRef } from 'vue';
+import { useDisplay } from 'vuetify';
 import { storeToRefs } from 'pinia';
 
 import { routes } from '@/router';
@@ -115,6 +122,8 @@ const toggleTheme = () => {
   theme.value = theme.value === 'dark' ? 'light' : 'dark';
   localStorage.setItem('adratcliff-pagetheme', theme.value);
 };
+
+const isMobile = useDisplay().mobile;
 
 const navDrawer = toRef(true);
 const infoDrawer = toRef(false);
