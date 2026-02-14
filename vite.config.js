@@ -9,7 +9,7 @@ import federation from '@originjs/vite-plugin-federation';
 const remotes = [
   { id: 'rgbCrosser', filename: 'rgbCrosser', folder: 'rgb-crosser', port: 8091 },
   { id: 'quantizer', filename: 'quantizer', folder: 'quantizer', port: 8092 },
-  { id: 'recipeBook', filename: 'recipeBook', folder: 'receipe-book', port: 8093 },
+  { id: 'recipeBook', filename: 'recipeBook', folder: 'recipe-book', port: 8093 },
 ];
 
 // https://vite.dev/config/
