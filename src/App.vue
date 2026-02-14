@@ -1,80 +1,101 @@
 <template>
   <v-app :theme="theme">
-    <v-app-bar
-      absolute
-      app>
+    <v-app-bar flat border>
       <v-app-bar-nav-icon
-        icon="mdi-home"
-        variant="text"
-        to="/" />
-      <v-app-bar-title text="AD Ratcliff" />
+        v-if="$vuetify.display.mobile"
+        @click="navDrawer = !navDrawer" />
+      <v-btn v-else icon="mdi-home" variant="text" to="/" />
+
+      <v-app-bar-title class="font-weight-bold">AD Ratcliff</v-app-bar-title>
+
       <v-spacer />
-      <v-btn
-        :icon="theme === 'dark' ? 'mdi-weather-sunny' : 'mdi-weather-night'"
-        @click="toggleTheme" />
-      <v-btn
-        :icon="infoDrawer ? 'mdi-close' : 'mdi-information'"
-        @click="infoDrawer = !infoDrawer" />
-      <v-btn
-        v-if="!user.id"
-        icon="mdi-account-outline"
-        @click="openLogin" />
-      <v-btn
-        v-if="user.id"
-        icon
-        @click="logout">
-        <v-avatar
-          :color="user.color"
-          :text="user.initials"
-          density="compact" />
-      </v-btn>
+
+      <div class="d-flex align-center ga-2 px-2">
+        <v-btn
+          :icon="theme === 'dark' ? 'mdi-weather-sunny' : 'mdi-weather-night'"
+          density="comfortable"
+          variant="text"
+          @click="toggleTheme" />
+
+        <v-btn
+          :icon="infoDrawer ? 'mdi-close' : 'mdi-information-outline'"
+          density="comfortable"
+          variant="text"
+          @click="infoDrawer = !infoDrawer" />
+
+        <v-divider vertical inset class="mx-2" />
+
+        <v-btn v-if="!user.id" variant="flat" color="primary" @click="openLogin">
+          <v-icon start>mdi-account-outline</v-icon>
+          <span v-if="!$vuetify.display.mobile">Login</span>
+        </v-btn>
+
+        <v-menu v-else location="bottom end">
+          <template #activator="{ props }">
+            <v-btn icon v-bind="props">
+              <v-avatar :color="user.color" size="32">
+                <span class="text-caption">{{ user.initials }}</span>
+              </v-avatar>
+            </v-btn>
+          </template>
+          <v-list density="compact" nav>
+            <v-list-item prepend-icon="mdi-logout" title="Logout" @click="logout" />
+          </v-list>
+        </v-menu>
+      </div>
     </v-app-bar>
+
     <v-navigation-drawer
-      width="240"
-      class="pt-2"
-      disable-route-watcher
-      permanent
-      mini-variant
-      app>
-      <v-tooltip
-        v-for="route in navRoutes"
-        :key="`route-link-${route.meta.id}`"
-        right>
-         <template #activator="{ props }">
-          <v-list-item
-            v-bind="props"
-            :to="route.path">
-            <template #prepend>
-              <v-icon>{{ route.meta.icon }}</v-icon>
-            </template>
-            <v-list-item-title>
-              {{ route.meta.title }}
-            </v-list-item-title>
-          </v-list-item>
-        </template>
-        <span>{{ route.meta.title }}</span>
-      </v-tooltip>
+      v-model="navDrawer"
+      :permanent="!$vuetify.display.mobile"
+      :rail="!$vuetify.display.mobile"
+      expand-on-hover
+      border>
+      <v-list nav>
+        <v-list-item
+          v-for="route in navRoutes"
+          :key="route.meta.id"
+          :prepend-icon="route.meta.icon"
+          :title="route.meta.title"
+          :to="route.path"
+          color="primary"
+          rounded="lg" />
+      </v-list>
     </v-navigation-drawer>
+
     <v-navigation-drawer
       v-model="infoDrawer"
+      :width="$vuetify.display.mobile ? $vuetify.display.width : 360"
       location="right"
-      width="360">
-      <v-card flat class="h-100">
-        <v-card-title>Test</v-card-title>
-        <v-divider />
-        <v-card-text class="info-card">Random card text</v-card-text>
-        <v-divider />
-        <v-card-actions>
+      temporary
+      border>
+      <div class="d-flex flex-column h-100">
+        <v-toolbar color="transparent" density="comfortable">
+          <v-toolbar-title class="text-subtitle-1 font-weight-bold">Information</v-toolbar-title>
           <v-spacer />
-          <v-btn
-            size="small"
-            text="Test Action"/>
-        </v-card-actions>
-      </v-card>
+          <v-btn icon="mdi-close" variant="text" @click="infoDrawer = false" />
+        </v-toolbar>
+
+        <v-divider />
+
+        <v-container class="flex-grow-1">
+          <p class="text-body-2 text-medium-emphasis">Random card text and helpful hints live here.</p>
+        </v-container>
+
+        <v-divider />
+
+        <div class="pa-4">
+          <v-btn block color="secondary" variant="tonal">Test Action</v-btn>
+        </div>
+      </div>
     </v-navigation-drawer>
-    <LoginDialog ref="loginDialog" />
+
+    <login-dialog ref="loginDialog" />
+
     <v-main>
-      <router-view />
+      <v-container fluid>
+        <router-view />
+      </v-container>
     </v-main>
   </v-app>
 </template>
@@ -95,6 +116,7 @@ const toggleTheme = () => {
   localStorage.setItem('adratcliff-pagetheme', theme.value);
 };
 
+const navDrawer = toRef(true);
 const infoDrawer = toRef(false);
 
 const appStore = useAppStore();
