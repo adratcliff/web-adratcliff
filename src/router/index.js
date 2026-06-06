@@ -48,7 +48,8 @@ export const routes = [
     component: RemoteLoader,
     props: {
       loader: () => import('recipeBook/List'),
-    },  },
+    },
+  },
   {
     path: '/recipes/create',
     name: 'recipe-create',
@@ -112,6 +113,20 @@ export const routes = [
     component: RemoteLoader,
     props: {
       loader: () => import('quantizer/Quantizer'),
+    },
+  },
+  {
+    path: '/indoor-cricet',
+    name: 'indoor-cricket',
+    meta: {
+      id: 'indoor-cricket',
+      title: 'Indoor Cricket Stats',
+      icon: 'mdi-cricket',
+      position: 25,
+    },
+    component: RemoteLoader,
+    props: {
+      loader: () => import('indoorStats/Stats'),
     },
   },
 ];

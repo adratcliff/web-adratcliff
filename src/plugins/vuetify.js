@@ -7,18 +7,27 @@ export default createVuetify({
     VChip: {
       variant: 'flat',
       size: 'small',
+      hideDetails: true,
     },
     VTextField: {
       variant: 'outlined',
       density: 'compact',
+      hideDetails: true,
     },
     VTextarea: {
       variant: 'outlined',
       density: 'compact',
+      hideDetails: true,
     },
     VCombobox: {
       variant: 'outlined',
       density: 'compact',
+      hideDetails: true,
+    },
+    VSelect: {
+      variant: 'outlined',
+      density: 'compact',
+      hideDetails: true,
     },
   },
 })
