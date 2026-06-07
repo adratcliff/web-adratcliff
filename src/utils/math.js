@@ -26,3 +26,5 @@ export const randomHex = (length = 8) => {
   }
   return r;
 };
+
+export const sumProperty = (list, prop) => list.reduce((acc, cur) => acc + cur[prop], 0);
