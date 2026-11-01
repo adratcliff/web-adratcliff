@@ -8,10 +8,12 @@ export const handleError = (label, error, props={}) => {
     console.error(label, error);
   }
 
+  if (error?.status === 401) return;
+
   callApi(errorLogging({
     ...props,
     label,
-    error: error.toString(),
+    error: error instanceof Error ? error.stack || error.message : JSON.stringify(error),
   })).catch((err) => console.warn(`Failed to log ${label} error`, err));
 };
 
