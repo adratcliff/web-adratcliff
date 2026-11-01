@@ -33,6 +33,7 @@ export default defineConfig(({ mode }) => {
         exposes: {
           './utils': './src/utils/index.js',
           './stores': './src/stores/shared.js',
+          './components': './src/components/shared.js',
         },
         shared: ['vue', 'vuetify', 'vue-router', 'pinia'],
       }),
