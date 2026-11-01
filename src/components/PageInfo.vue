@@ -115,15 +115,11 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useTheme } from 'vuetify';
-import { storeToRefs } from 'pinia';
 
-import { routes } from '@/router';
-import { useAppStore } from '@/stores';
+import { canAccess, routes } from '@/router';
 import pageInfo from '@/config/pageInfo';
 
 const emit = defineEmits(['close']);
-
-const { token } = storeToRefs(useAppStore());
 
 const statuses = {
   live: { text: 'Live', color: 'success', icon: 'mdi-check-circle' },
@@ -185,11 +181,7 @@ const lists = computed(() => [
 // Hide links to pages that are disabled or need a login the viewer doesn't have, matching the nav.
 const related = computed(() => (info.value?.related || [])
   .map(id => routes.find(r => r.meta.id === id))
-  .filter(r => {
-    if (!r || r.meta.disabled) return false;
-    if (r.meta.requirements?.includes('token') && !token.value) return false;
-    return true;
-  }));
+  .filter(r => r && canAccess(r)));
 </script>
 
 <style lang="scss" scoped>

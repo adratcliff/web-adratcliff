@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { storeToRefs } from 'pinia';
 
 import HomeView from '@/pages/HomeView.vue';
 import AboutView from '@/pages/AboutView.vue';
@@ -157,18 +156,20 @@ export const routes = [
   },
 ];
 
+// Whether the current viewer can open a route; shared by the router guard, nav and page links
+export const canAccess = (route) => {
+  if (route.meta.disabled) return false;
+  if (route.meta.requirements?.includes('token') && !useAppStore().token) return false;
+  return true;
+};
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 });
 
 router.beforeEach(async (to, from, next) => {
-  if (to.meta.disabled) return next(false);
-
-  if (to.meta.requirements) {
-    const appStore = storeToRefs(useAppStore());
-    if (to.meta.requirements.includes('token') && !appStore.token.value) return next(false);
-  }
+  if (!canAccess(to)) return next(false);
 
   if (to.meta.runBefore) {
     await to.meta.runBefore(to, from);

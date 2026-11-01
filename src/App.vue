@@ -98,7 +98,7 @@ import { computed, onMounted, ref, toRef, watch } from 'vue';
 import { useDisplay } from 'vuetify';
 import { storeToRefs } from 'pinia';
 
-import { routes } from '@/router';
+import { canAccess, routes } from '@/router';
 import { useAppStore } from '@/stores';
 import { useUserStore } from '@/stores/users';
 
@@ -123,14 +123,7 @@ const { token } = storeToRefs(appStore);
 const { self: user } = storeToRefs(userStore);
 
 const navRoutes = computed(() => routes
-  .filter(route => {
-    if (route.meta.disabled) return false;
-    if (!route.meta.position) return false;
-    if (route.meta.requirements) {
-      if (route.meta.requirements.includes('token') && !token.value) return false;
-    }
-    return true;
-  })
+  .filter(route => route.meta.position && canAccess(route))
   .sort((a, b) => a.meta.position - b.meta.position));
 
 const loginDialog = ref(null);

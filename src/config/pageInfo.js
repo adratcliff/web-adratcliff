@@ -14,7 +14,9 @@
 //   updated: 'YYYY-MM-DD',
 // }
 
-const github = repo => ({ label: 'GitHub', url: `https://github.com/adratcliff/${repo}`, icon: 'mdi-github', chip: repo });
+import { githubUrl } from './projects';
+
+const github = repo => ({ label: 'GitHub', url: githubUrl(repo), icon: 'mdi-github', chip: repo });
 
 const home = {
   description: 'A personal portfolio of small tools and side projects. Each page is its own app, built and deployed separately and loaded into this site at runtime.',
