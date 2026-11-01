@@ -1,56 +1,49 @@
 <template>
   <v-dialog
     v-model="loginDialog"
-    width="450">
-    <v-card>
-      <v-card-title>
-        <v-row>
-          <v-col cols="3" />
-          <v-col cols="6" class="d-flex align-center justify-center">
+    max-width="420">
+    <v-card rounded="lg">
+      <v-toolbar color="transparent" density="comfortable">
+        <v-toolbar-title class="text-subtitle-1 font-weight-bold">Login</v-toolbar-title>
+        <v-spacer />
+        <v-btn icon="mdi-close" variant="text" @click="closeLogin" />
+      </v-toolbar>
+
+      <v-divider />
+
+      <v-form @submit.prevent="login">
+        <v-card-text class="d-flex flex-column ga-4 pa-6">
+          <v-text-field
+            v-model="email"
+            label="Email"
+            type="email"
+            autocomplete="email"
+            prepend-inner-icon="mdi-email-outline"
+            variant="outlined"
+            density="comfortable"
+            hide-details
+            autofocus />
+          <v-text-field
+            v-model="password"
+            label="Password"
+            type="password"
+            autocomplete="current-password"
+            prepend-inner-icon="mdi-lock-outline"
+            variant="outlined"
+            density="comfortable"
+            hide-details />
+          <v-btn
+            :disabled="loginDisabled"
+            :loading="!!loaders.login"
+            type="submit"
+            :color="email && password ? 'primary' : undefined"
+            variant="flat"
+            size="large"
+            block>
             Login
-          </v-col>
-          <v-col cols="3" class="d-flex align-center justify-end">
-            <v-btn
-              icon="mdi-close"
-              variant="flat"
-              size="small"
-              @click="closeLogin" />
-          </v-col>
-        </v-row>
-      </v-card-title>
-      <v-card-text class="pt-8 pb-12">
-        <v-row class="d-flex justify-center">
-          <v-col cols="10">
-            <v-row>
-              <v-text-field
-                v-model="email"
-                label="Email"
-                density="comfortable"
-                @keydown.enter="login" />
-            </v-row>
-            <v-row>
-              <v-text-field
-                v-model="password"
-                label="Password"
-                type="password"
-                density="comfortable"
-                @keydown.enter="login" />
-            </v-row>
-            <v-row>
-              <v-btn
-                :disabled="loginDisabled"
-                :loading="!!loaders.login"
-                variant="tonal"
-                color="primary"
-                class="w-100"
-                size="large"
-                @click="login">
-                Login
-              </v-btn>
-            </v-row>
-          </v-col>
-        </v-row>
-      </v-card-text>
+          </v-btn>
+        </v-card-text>
+      </v-form>
     </v-card>
   </v-dialog>
 </template>
