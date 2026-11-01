@@ -4,13 +4,13 @@
       <v-app-bar-nav-icon
         v-if="isMobile"
         @click="navDrawer = !navDrawer" />
-      <v-btn v-else icon="mdi-home" variant="text" to="/" />
+      <v-btn v-else :active="false" icon="mdi-home" variant="text" to="/" />
 
       <v-app-bar-title class="font-weight-bold">AD Ratcliff</v-app-bar-title>
 
       <v-spacer />
 
-      <div class="d-flex align-center ga-2 px-2">
+      <div class="d-flex align-center ga-2 ps-2 pe-4">
         <v-btn
           :icon="theme === 'dark' ? 'mdi-weather-sunny' : 'mdi-weather-night'"
           density="comfortable"
@@ -38,13 +38,18 @@
 
         <v-menu v-else location="bottom end">
           <template #activator="{ props }">
-            <v-btn icon v-bind="props">
-              <v-avatar :color="user.color" size="32">
-                <span class="text-caption">{{ user.initials }}</span>
+            <v-btn icon density="comfortable" variant="text" :aria-label="user.fullName" v-bind="props">
+              <v-avatar :color="user.color" size="36">
+                <span v-if="user.initials" class="user-initials font-weight-bold text-uppercase">
+                  {{ user.initials }}
+                </span>
+                <v-icon v-else icon="mdi-account" />
               </v-avatar>
             </v-btn>
           </template>
-          <v-list density="compact" nav>
+          <v-list density="compact" nav min-width="200">
+            <v-list-item :title="user.fullName" :subtitle="user.email" />
+            <v-divider class="my-1" />
             <v-list-item prepend-icon="mdi-logout" title="Logout" @click="logout" />
           </v-list>
         </v-menu>
@@ -57,7 +62,7 @@
       :rail="!isMobile"
       expand-on-hover
       border>
-      <v-list nav>
+      <v-list nav class="overflow-x-hidden">
         <v-list-item
           v-for="route in navRoutes"
           :key="route.meta.id"
@@ -107,7 +112,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, toRef } from 'vue';
+import { computed, onMounted, ref, toRef, watch } from 'vue';
 import { useDisplay } from 'vuetify';
 import { storeToRefs } from 'pinia';
 
@@ -149,14 +154,25 @@ const loginDialog = ref(null);
 const openLogin = () => loginDialog.value.openLogin();
 const logout = () => appStore.logout();
 
-onMounted(async () => {
-  appStore.pageLoad();
-  await userStore.getDetail('self');
+watch(token, (value) => {
+  if (value) userStore.getDetail('self');
 });
+
+onMounted(() => appStore.pageLoad());
 </script>
+
+<style lang="scss">
+html {
+  overflow-y: auto;
+}
+</style>
 
 <style lang="scss" scoped>
 .info-card {
   height: calc(100% - 102px);
+}
+
+.user-initials {
+  color: v-bind('user.textColor');
 }
 </style>

@@ -8,10 +8,13 @@ export const useUserStore = createStore('users', {
     const { userId } = storeToRefs(useAppStore());
     if (!userId.value || !(userId.value in state.resources)) return {};
     const user = state.resources[userId.value];
+    const name = `${user.firstName || ''} ${user.lastName || ''}`;
     return {
       ...user,
+      fullName: name.trim(),
       initials: (user.firstName || '').slice(0, 1) + (user.lastName || '').slice(0, 1),
-      color: stringToHslColor(`${user.firstName || ''} ${user.lastName || ''}`, 50, 70),
+      color: stringToHslColor(name, 45, 45),
+      textColor: stringToHslColor(name, 80, 95),
     };
   },
 });
