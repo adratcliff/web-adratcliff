@@ -6,7 +6,6 @@ import AboutView from '@/pages/AboutView.vue';
 
 import { useAppStore } from '@/stores';
 
-import HelloWorld from '@/components/HelloWorld.vue';
 import RemoteLoader from '@/components/RemoteLoader.vue';
 
 // const importChunk = (chunkImport, pageName) => chunkImport().then((pages) => pages[pageName]);
@@ -82,10 +81,37 @@ export const routes = [
       title: 'Secret Santa',
       icon: 'mdi-gift',
       position: 30,
-      disabled: true,
     },
-    // component: () => import(/* webpackChunkName: "secret-santa" */ '@/views/AboutView'),
-    component: () => HelloWorld
+    component: RemoteLoader,
+    props: {
+      loader: () => import('secretSanta/List'),
+    },
+  },
+  {
+    path: '/secret-santa/create',
+    name: 'secret-santa-create',
+    meta: {
+      id: 'secret-new',
+      title: 'Create Secret Santa',
+      icon: 'mdi-gift',
+    },
+    component: RemoteLoader,
+    props: {
+      loader: () => import('secretSanta/Create'),
+    },
+  },
+  {
+    path: '/secret-santa/:id',
+    name: 'secret-santa-draw',
+    meta: {
+      id: 'secret-draw',
+      title: 'Secret Santa',
+      icon: 'mdi-gift',
+    },
+    component: RemoteLoader,
+    props: {
+      loader: () => import('secretSanta/Draw'),
+    },
   },
   {
     path: '/rgb-mapper',

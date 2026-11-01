@@ -11,6 +11,7 @@ const remotes = [
   { id: 'quantizer', filename: 'quantizer', folder: 'quantizer', port: 8092 },
   { id: 'recipeBook', filename: 'recipeBook', folder: 'recipe-book', port: 8093 },
   { id: 'indoorStats', filename: 'indoorStats', folder: 'indoor-stats', port: 8094 },
+  { id: 'secretSanta', filename: 'secretSanta', folder: 'secret-santa', port: 8095 },
 ];
 
 // https://vite.dev/config/
