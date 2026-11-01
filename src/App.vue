@@ -80,25 +80,7 @@
       location="right"
       temporary
       border>
-      <div class="d-flex flex-column h-100">
-        <v-toolbar color="transparent" density="comfortable">
-          <v-toolbar-title class="text-subtitle-1 font-weight-bold">Information</v-toolbar-title>
-          <v-spacer />
-          <v-btn icon="mdi-close" variant="text" @click="infoDrawer = false" />
-        </v-toolbar>
-
-        <v-divider />
-
-        <v-container class="flex-grow-1">
-          <p class="text-body-2 text-medium-emphasis">Random card text and helpful hints live here.</p>
-        </v-container>
-
-        <v-divider />
-
-        <div class="pa-4">
-          <v-btn block color="secondary" variant="tonal">Test Action</v-btn>
-        </div>
-      </div>
+      <page-info @close="infoDrawer = false" />
     </v-navigation-drawer>
 
     <login-dialog ref="loginDialog" />
@@ -121,6 +103,7 @@ import { useAppStore } from '@/stores';
 import { useUserStore } from '@/stores/users';
 
 import LoginDialog from '@/components/LoginDialog.vue';
+import PageInfo from '@/components/PageInfo.vue';
 
 const theme = toRef(localStorage.getItem('adratcliff-pagetheme') || 'dark');
 const toggleTheme = () => {
@@ -168,10 +151,6 @@ html {
 </style>
 
 <style lang="scss" scoped>
-.info-card {
-  height: calc(100% - 102px);
-}
-
 .user-initials {
   color: v-bind('user.textColor');
 }
